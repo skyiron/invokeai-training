@@ -125,7 +125,7 @@ class SdxlFinetuneConfig(BasePipelineConfig):
     """
 
     max_grad_norm: float | None = None
-    """Max gradient norm for clipping. Set to None for no clipping.
+    """Max gradient norm for clipping. Set to null or 0 for no clipping.
     """
 
     validation_prompts: list[str] = []

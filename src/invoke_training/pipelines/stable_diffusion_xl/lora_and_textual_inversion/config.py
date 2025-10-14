@@ -84,16 +84,18 @@ class SdxlLoraAndTextualInversionConfig(BasePipelineConfig):
 
     optimizer: AdamOptimizerConfig | ProdigyOptimizerConfig = AdamOptimizerConfig()
 
-    text_encoder_learning_rate: float = 1e-5
-    """The learning rate to use for the text encoder model.
+    text_encoder_learning_rate: float | None = 1e-5
+    """The learning rate to use for the text encoder model. Set to null or 0 to use the optimizer's default learning
+    rate.
     """
 
-    unet_learning_rate: float = 1e-4
-    """The learning rate to use for the UNet model.
+    unet_learning_rate: float | None = 1e-4
+    """The learning rate to use for the UNet model. Set to null or 0 to use the optimizer's default learning rate.
     """
 
-    textual_inversion_learning_rate: float = 1e-3
-    """The learning rate to use for textual inversion training of the embeddings.
+    textual_inversion_learning_rate: float | None = 1e-3
+    """The learning rate to use for textual inversion training of the embeddings. Set to null or 0 to use the
+    optimizer's default learning rate.
     """
 
     lr_scheduler: Literal[
@@ -187,7 +189,7 @@ class SdxlLoraAndTextualInversionConfig(BasePipelineConfig):
     """
 
     max_grad_norm: float | None = None
-    """Max gradient norm for clipping. Set to None for no clipping.
+    """Max gradient norm for clipping. Set to null or 0 for no clipping.
     """
 
     validation_prompts: list[str] = []

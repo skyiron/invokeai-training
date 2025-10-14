@@ -69,7 +69,7 @@ dependencies = [
 
 [tool.ruff]
 src = ["src"]
-select = ["E", "F", "W", "C9", "N8", "I"]
+lint.select = ["E", "F", "W", "C9", "N8", "I"]
 target-version = "py39"
 line-length = 120
 

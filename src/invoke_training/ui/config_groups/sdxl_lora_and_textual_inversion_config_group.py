@@ -145,10 +145,23 @@ class SdxlLoraAndTextualInversionConfigGroup(UIConfigElement):
                 self.train_text_encoder = gr.Checkbox(label="Train Text Encoder", interactive=True)
                 self.train_ti = gr.Checkbox(label="Train Textual Inversion Token", scale=2, interactive=True)
             with gr.Row():
-                self.unet_learning_rate = gr.Number(label="UNet Learning Rate", interactive=True)
-                self.text_encoder_learning_rate = gr.Number(label="Text Encoder Learning Rate", interactive=True)
+                self.unet_learning_rate = gr.Number(
+                    label="UNet Learning Rate",
+                    info="The UNet learning rate. Set to 0 or leave empty to inherit from the base optimizer "
+                    "learning rate.",
+                    interactive=True,
+                )
+                self.text_encoder_learning_rate = gr.Number(
+                    label="Text Encoder Learning Rate",
+                    info="The text encoder learning rate. Set to 0 or leave empty to inherit from the base optimizer "
+                    "learning rate.",
+                    interactive=True,
+                )
                 self.textual_inversion_learning_rate = gr.Number(
-                    label="Textual Inversion Learning Rate", interactive=True
+                    label="Textual Inversion Learning Rate",
+                    info="The textual inversion learning rate. Set to 0 or leave empty to inherit from the base "
+                    "optimizer learning rate.",
+                    interactive=True,
                 )
                 self.ti_train_steps_ratio = gr.Number(label="Textual Inversion Train Steps Ratio", interactive=True)
             with gr.Row():
@@ -186,7 +199,7 @@ class SdxlLoraAndTextualInversionConfigGroup(UIConfigElement):
                 )
                 self.max_grad_norm = gr.Number(
                     label="Max Gradient Norm",
-                    info="Max gradient norm for clipping. Set to None for no clipping.",
+                    info="Max gradient norm for clipping. Set to 0 or leave empty for no clipping (null).",
                     interactive=True,
                 )
                 self.train_batch_size = gr.Number(
@@ -273,14 +286,18 @@ class SdxlLoraAndTextualInversionConfigGroup(UIConfigElement):
         new_config.train_unet = ui_data.pop(self.train_unet)
         new_config.train_text_encoder = ui_data.pop(self.train_text_encoder)
         new_config.train_ti = ui_data.pop(self.train_ti)
-        new_config.unet_learning_rate = ui_data.pop(self.unet_learning_rate)
-        new_config.text_encoder_learning_rate = ui_data.pop(self.text_encoder_learning_rate)
-        new_config.textual_inversion_learning_rate = ui_data.pop(self.textual_inversion_learning_rate)
+        unet_lr_value = ui_data.pop(self.unet_learning_rate)
+        new_config.unet_learning_rate = None if unet_lr_value == 0 else unet_lr_value
+        text_encoder_lr_value = ui_data.pop(self.text_encoder_learning_rate)
+        new_config.text_encoder_learning_rate = None if text_encoder_lr_value == 0 else text_encoder_lr_value
+        ti_lr_value = ui_data.pop(self.textual_inversion_learning_rate)
+        new_config.textual_inversion_learning_rate = None if ti_lr_value == 0 else ti_lr_value
         new_config.ti_train_steps_ratio = ui_data.pop(self.ti_train_steps_ratio)
         new_config.lr_scheduler = ui_data.pop(self.lr_scheduler)
         new_config.lr_warmup_steps = ui_data.pop(self.lr_warmup_steps)
         new_config.use_masks = ui_data.pop(self.use_masks)
-        new_config.max_grad_norm = ui_data.pop(self.max_grad_norm)
+        max_grad_norm_value = ui_data.pop(self.max_grad_norm)
+        new_config.max_grad_norm = None if max_grad_norm_value == 0 else max_grad_norm_value
         new_config.train_batch_size = ui_data.pop(self.train_batch_size)
         new_config.cache_text_encoder_outputs = ui_data.pop(self.cache_text_encoder_outputs)
         new_config.cache_vae_outputs = ui_data.pop(self.cache_vae_outputs)

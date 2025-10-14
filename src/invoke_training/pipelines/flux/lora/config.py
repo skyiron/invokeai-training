@@ -52,12 +52,12 @@ class FluxLoraConfig(BasePipelineConfig):
 
     text_encoder_learning_rate: float | None = 1e-4
     """The learning rate to use for the text encoder model. If set, this overrides the optimizer's default learning
-    rate.
+    rate. Set to null or 0 to use the optimizer's default learning rate.
     """
 
     transformer_learning_rate: float | None = 4e-4
     """The learning rate to use for the transformer model. If set, this overrides the optimizer's default learning
-    rate.
+    rate. Set to null or 0 to use the optimizer's default learning rate.
     """
 
     lr_scheduler: Literal[
@@ -176,7 +176,7 @@ class FluxLoraConfig(BasePipelineConfig):
     """
 
     max_grad_norm: float | None = None
-    """Max gradient norm for clipping. Set to None for no clipping.
+    """Max gradient norm for clipping. Set to null or 0 for no clipping.
     """
 
     validation_prompts: list[str] = []

@@ -109,12 +109,13 @@ class SdLoraConfigGroup(UIConfigElement):
             with gr.Row():
                 self.unet_learning_rate = gr.Number(
                     label="UNet Learning Rate",
-                    info="The UNet learning rate. If None, then it is inherited from the base optimizer learning rate.",
+                    info="The UNet learning rate. Set to 0 or leave empty to inherit from the base optimizer "
+                    "learning rate.",
                     interactive=True,
                 )
                 self.text_encoder_learning_rate = gr.Number(
                     label="Text Encoder Learning Rate",
-                    info="The text encoder learning rate. If None, then it is inherited from the base optimizer "
+                    info="The text encoder learning rate. Set to 0 or leave empty to inherit from the base optimizer "
                     "learning rate.",
                     interactive=True,
                 )
@@ -153,7 +154,7 @@ class SdLoraConfigGroup(UIConfigElement):
                 )
                 self.max_grad_norm = gr.Number(
                     label="Max Gradient Norm",
-                    info="Max gradient norm for clipping. Set to None for no clipping.",
+                    info="Max gradient norm for clipping. Set to 0 or leave empty for no clipping (null).",
                     interactive=True,
                 )
                 self.train_batch_size = gr.Number(
@@ -223,13 +224,16 @@ class SdLoraConfigGroup(UIConfigElement):
         new_config.hf_variant = ui_data.pop(self.hf_variant) or None
         new_config.max_checkpoints = ui_data.pop(self.max_checkpoints)
         new_config.train_unet = ui_data.pop(self.train_unet)
-        new_config.unet_learning_rate = ui_data.pop(self.unet_learning_rate)
+        unet_lr_value = ui_data.pop(self.unet_learning_rate)
+        new_config.unet_learning_rate = None if unet_lr_value == 0 else unet_lr_value
         new_config.train_text_encoder = ui_data.pop(self.train_text_encoder)
-        new_config.text_encoder_learning_rate = ui_data.pop(self.text_encoder_learning_rate)
+        text_encoder_lr_value = ui_data.pop(self.text_encoder_learning_rate)
+        new_config.text_encoder_learning_rate = None if text_encoder_lr_value == 0 else text_encoder_lr_value
         new_config.lr_scheduler = ui_data.pop(self.lr_scheduler)
         new_config.lr_warmup_steps = ui_data.pop(self.lr_warmup_steps)
         new_config.use_masks = ui_data.pop(self.use_masks)
-        new_config.max_grad_norm = ui_data.pop(self.max_grad_norm)
+        max_grad_norm_value = ui_data.pop(self.max_grad_norm)
+        new_config.max_grad_norm = None if max_grad_norm_value == 0 else max_grad_norm_value
         new_config.train_batch_size = ui_data.pop(self.train_batch_size)
         new_config.cache_text_encoder_outputs = ui_data.pop(self.cache_text_encoder_outputs)
         new_config.cache_vae_outputs = ui_data.pop(self.cache_vae_outputs)

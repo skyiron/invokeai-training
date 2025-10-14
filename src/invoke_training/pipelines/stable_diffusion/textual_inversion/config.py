@@ -160,7 +160,7 @@ class SdTextualInversionConfig(BasePipelineConfig):
     """
 
     max_grad_norm: float | None = None
-    """Maximum gradient norm for gradient clipping. Set to `None` for no clipping.
+    """Maximum gradient norm for gradient clipping. Set to `null` or 0 for no clipping.
     """
 
     validation_prompts: list[str] = []

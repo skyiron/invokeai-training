@@ -67,7 +67,7 @@ class FluxLoraConfigGroup(UIConfigElement):
             with gr.Row():
                 self.transformer_learning_rate = gr.Number(
                     label="Transformer Learning Rate",
-                    info="The transformer learning rate. If None, then it is inherited from the base optimizer "
+                    info="The transformer learning rate. Set to 0 or leave empty to inherit from the base optimizer "
                     "learning rate.",
                     interactive=True,
                 )
@@ -103,7 +103,7 @@ class FluxLoraConfigGroup(UIConfigElement):
                 )
                 self.max_grad_norm = gr.Number(
                     label="Max Gradient Norm",
-                    info="Max gradient norm for clipping. Set to None for no clipping.",
+                    info="Max gradient norm for clipping. Set to 0 or leave empty for no clipping (null).",
                     interactive=True,
                 )
                 self.train_batch_size = gr.Number(
@@ -313,13 +313,9 @@ class FluxLoraConfigGroup(UIConfigElement):
             # Set basic properties
             new_config.model = safe_pop(self.model, new_config.model)
             new_config.train_transformer = safe_pop(self.train_transformer, new_config.train_transformer)
-            new_config.train_text_encoder = safe_pop(self.train_text_encoder, new_config.train_text_encoder)
-            new_config.transformer_learning_rate = safe_pop(
-                self.transformer_learning_rate, new_config.transformer_learning_rate
-            )
-            new_config.text_encoder_learning_rate = safe_pop(
-                self.text_encoder_learning_rate, new_config.text_encoder_learning_rate
-            )
+            # Note: train_text_encoder and text_encoder_learning_rate are not supported for Flux LoRA
+            transformer_lr_value = safe_pop(self.transformer_learning_rate, new_config.transformer_learning_rate)
+            new_config.transformer_learning_rate = None if transformer_lr_value == 0 else transformer_lr_value
             new_config.gradient_accumulation_steps = safe_pop(
                 self.gradient_accumulation_steps, new_config.gradient_accumulation_steps
             )
@@ -330,7 +326,8 @@ class FluxLoraConfigGroup(UIConfigElement):
 
             new_config.lora_rank_dim = safe_pop(self.lora_rank_dim, new_config.lora_rank_dim)
             new_config.min_snr_gamma = safe_pop(self.min_snr_gamma, new_config.min_snr_gamma)
-            new_config.max_grad_norm = safe_pop(self.max_grad_norm, new_config.max_grad_norm)
+            max_grad_norm_value = safe_pop(self.max_grad_norm, new_config.max_grad_norm)
+            new_config.max_grad_norm = None if max_grad_norm_value == 0 else max_grad_norm_value
             new_config.train_batch_size = safe_pop(self.train_batch_size, new_config.train_batch_size)
             new_config.weight_dtype = safe_pop(self.weight_dtype, new_config.weight_dtype)
             new_config.mixed_precision = safe_pop(self.mixed_precision, new_config.mixed_precision)

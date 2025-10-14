@@ -154,7 +154,7 @@ class SdTextualInversionConfigGroup(UIConfigElement):
                 )
                 self.max_grad_norm = gr.Number(
                     label="Max Gradient Norm",
-                    info="Max gradient norm for clipping. Set to None for no clipping.",
+                    info="Max gradient norm for clipping. Set to 0 or leave empty for no clipping (null).",
                     interactive=True,
                 )
                 self.train_batch_size = gr.Number(
@@ -230,7 +230,8 @@ class SdTextualInversionConfigGroup(UIConfigElement):
         new_config.lr_scheduler = ui_data.pop(self.lr_scheduler)
         new_config.lr_warmup_steps = ui_data.pop(self.lr_warmup_steps)
         new_config.use_masks = ui_data.pop(self.use_masks)
-        new_config.max_grad_norm = ui_data.pop(self.max_grad_norm)
+        max_grad_norm_value = ui_data.pop(self.max_grad_norm)
+        new_config.max_grad_norm = None if max_grad_norm_value == 0 else max_grad_norm_value
         new_config.train_batch_size = ui_data.pop(self.train_batch_size)
         new_config.cache_vae_outputs = ui_data.pop(self.cache_vae_outputs)
         new_config.enable_cpu_offload_during_validation = ui_data.pop(self.enable_cpu_offload_during_validation)
